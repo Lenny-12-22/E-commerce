@@ -1,0 +1,48 @@
+.navbar-brand img{
+    width: 100px;
+    padding:10px;
+    margin-left: 20px;
+}
+
+#topNav{
+    width: 75%;
+    height: 50px;
+    z-index: 1000;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    
+   
+    
+
+    
+}
+
+body{
+    font-family: Montserrat;
+   
+}
+
+.jumbotron{
+    
+    background-size: contain;
+    background-position: center;
+}
+
+#jumboPic img{
+    object-fit:contain;
+    width: 100%;
+    height: 450px;
+    padding: 20px;
+    margin-left: auto;
+    margin-right: auto;
+   
+
+}
+
+.card img{
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+}
