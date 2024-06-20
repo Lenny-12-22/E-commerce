@@ -27,15 +27,21 @@ def add_to_cart(request):
 def view_cart(request):
     cart = Cart.objects.get(user=request.user)
     cart_items = CartItem.objects.filter(cart=cart)
+    total_price = cart.get_cart_total()
+    product_total = cart.get_item_total()
+    print(product_total)
+    
 
-    return render(request, 'basket.html', {'cart_items': cart_items})
+    return render(request, 'basket.html', {'cart_items': cart_items, 'total':total_price})
 
 @login_required
 def update_cart_item(request):
     cart_item_id = request.POST.get('cart_item_id')
     quantity = int(request.POST.get('quantity'))
+    print("am here")
+    print(cart_item_id)
 
-    cart_item = get_object_or_404(CartItem, id=cart_item_id)
+    cart_item = get_object_or_404(CartItem, pk=cart_item_id)
     if quantity > 0:
         cart_item.quantity = quantity
         cart_item.save()

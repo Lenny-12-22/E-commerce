@@ -10,6 +10,13 @@ class Cart(models.Model):
 
     def __str__(self):
         return f'Cart for {self.user.username}'
+    
+    def get_cart_total(self):
+        total = 0
+        cart_items = self.cartitem_set.all()  
+        for item in cart_items:
+            total += item.product.price * item.quantity
+        return total
 
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
@@ -18,3 +25,5 @@ class CartItem(models.Model):
 
     def __str__(self):
         return f'{self.quantity} x {self.product.name} {self.cart.user}'
+    
+    
