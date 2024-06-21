@@ -27,18 +27,19 @@
         </div>
         <div class="col-lg-2 col-sm-6 col-6 d-flex flex-row flex-lg-column flex-xl-row text-nowrap">
           <div class="">
-            <input class="form-control text-center me-3" id="inputQuantity" type="number" value="{{cart_items.quantity}}" style="max-width: 3rem" />
+            <label for="inputQuantity_{{ cart_items.id }}" class="form-label">Quantity</label>
+            <input class="form-control text-center me-3 inputQuantity" id="inputQuantity_{{ cart_items.id }}" type="number" value="{{cart_items.quantity}}" style="max-width: 3rem" />
           </div>
           <div class="">
-            <text class="h6">$Total.00</text> <br />
-            <small class="text-muted text-nowrap"> Ksh {{cart_items.product.price}} / per item </small>
+            <br>
+            <small class="text-muted text-nowrap p-3"> Ksh {{cart_items.product.price}} / per item </small>
           </div>
         </div>
         <div class="col-lg col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
           <div class="float-md-end">
       
-            <a href="#" id="update-item" class="btn btn-light border icon-hover-danger update-basket" data-id ="{{cart_items.id}}" > Update</a>
-            <a href="#" id="delete-item" class="btn btn-light border text-danger icon-hover-danger" data-id ="{{cart_items.id}}"> Remove</a>
+            <a href="#" id="" class="btn btn-light border icon-hover-danger update-item" data-id ="{{cart_items.id}}" > Update</a>
+            <a href="#" id="" class="btn btn-light border text-danger icon-hover-danger delete-item" data-id ="{{cart_items.id}}"> Remove</a>
           </div>
         </div>
       </div>
@@ -91,7 +92,7 @@
       </div>
 
       <div class="mt-3">
-        <a href="#" class="btn btn-success w-100 shadow-0 mb-2"> Make Purchase </a>
+        <a href="" class="btn btn-success w-100 shadow-0 mb-2 create-order"> Make Purchase </a>
         <a href="#" class="btn btn-light w-100 border mt-2"> Back to shop </a>
       </div>
     </div>
@@ -238,6 +239,7 @@
             });
         }
 
+
         function removeFromCart(cartItemId) {
             $.post("{% url 'basket:remove_from_cart' %}", {
                 'cart_item_id': cartItemId,
@@ -248,21 +250,48 @@
             });
         }
 
-        $('#update-item').click(function(event) {
+        $('.update-item').click(function(event) {
                 event.preventDefault();
                 var cartItemId = $(this).data('id');
-                var quantity = $('#inputQuantity').val();
+                var quantity = $(this).closest('.row').find('.inputQuantity').val();
                 console.log(cartItemId);
                 console.log(quantity);
                 updateCartItem(cartItemId, quantity);
             });
 
-          $('#delete-item').click(function(event) {
+          $('.delete-item').click(function(event) {
                 event.preventDefault();
                 var cartItemId = $(this).data('id');
                 console.log(cartItemId);
                 removeFromCart(cartItemId);
           });
+
+          $(document).ready(function() {
+    $('.create-order').click(function() {
+        $.ajax({
+            url: '{% url "buy:create_order" %}',
+            type: 'POST',
+            headers: {
+                'X-CSRFToken': csrftoken 
+            },
+            success: function(response) {
+                if (response.status === 'Order created successfully') {
+                    alert('Order created successfully! Order ID: ' + response.order_id);
+                    // Optionally redirect to the order detail page or any other page
+                } else {
+                    alert('Failed to create order');
+                }
+            },
+            error: function(error) {
+                alert('An error occurred');
+            }
+        });
+    });
+});
+
+         
+
+         
     </script>
   </body>
 </html>

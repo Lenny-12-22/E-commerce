@@ -28,8 +28,7 @@ def view_cart(request):
     cart = Cart.objects.get(user=request.user)
     cart_items = CartItem.objects.filter(cart=cart)
     total_price = cart.get_cart_total()
-    product_total = cart.get_item_total()
-    print(product_total)
+    
     
 
     return render(request, 'basket.html', {'cart_items': cart_items, 'total':total_price})
